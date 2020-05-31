@@ -1,6 +1,6 @@
 package com.teched.app.ws.controllers;
 
-import com.teched.app.ws.entities.Project;
+import com.teched.app.ws.entities.Course;
 import com.teched.app.ws.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +21,8 @@ public class ProjectController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Project> createProject(@RequestBody Project project){
-		Project project1 = projectService.saveOrUpdateProject(project);
-		return new ResponseEntity<Project>(project, HttpStatus.CREATED);
+	public ResponseEntity<Course> createProject(@RequestBody Course course){
+		Course course1 = projectService.saveOrUpdateProject(course);
+		return new ResponseEntity<Course>(course, HttpStatus.CREATED);
 	}
 }

@@ -1,37 +1,45 @@
 package com.teched.app.ws.entities;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 
-public class Project implements Serializable {
-	
-	private static final long serialVersionUID = -592129286256341695L;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+@Entity
+@Table(name = "projects")
+public class Course extends TimestampedEntity {
 	
+
+
+	@NotBlank(message = "Course name is required.")
+	@Column(nullable = false)
 	private String projectName;
+
+	@Size(min = 4, max = 8, message = "Please use 4 to 8 characters")
+	@NotBlank(message = "Course identifier is required.")
+	@Column(nullable = false, unique = true)
 	private String projectIdentifier;
+
+	@Type(type = "text")
+	@NotBlank(message = "Course description is required.")
 	@Lob
+	@Size(min = 1, max = 140, message = "Please use no more than 140 characters")
 	private String description;
 	private LocalDateTime createdAt;
 	private LocalDateTime updateAt;
 	
 	private boolean completed;
 
-	public Project() {
+	public Course() {
 		super();
 	}
 
-	public Project(String projectName, String projectIdentifier, String description) {
+	public Course(String projectName, String projectIdentifier, String description) {
 		super();
 		this.projectName = projectName;
 		this.projectIdentifier = projectIdentifier;
@@ -39,7 +47,7 @@ public class Project implements Serializable {
 		this.completed = false;
 	}
 
-	public Project(String projectName, String projectIdentifier, String description, boolean completed) {
+	public Course(String projectName, String projectIdentifier, String description, boolean completed) {
 		super();
 		this.projectName = projectName;
 		this.projectIdentifier = projectIdentifier;
@@ -76,13 +84,6 @@ public class Project implements Serializable {
 		this.description = description;
 	}
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
 
 	public LocalDateTime getUpdateAt() {
 		return updateAt;
@@ -99,19 +100,7 @@ public class Project implements Serializable {
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
 	}
-	
-	@PrePersist
-	public void preSave() {
-		if(this.createdAt == null) {
-			setCreatedAt(LocalDateTime.now());
-		}
-		if(this.updateAt == null) {
-			setUpdateAt(LocalDateTime.now());
-		}
-	}
-	
-	@PreUpdate
-	public void preUpdate() {setUpdateAt(LocalDateTime.now());}
+
 	
 	
 }
